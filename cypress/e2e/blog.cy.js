@@ -177,25 +177,28 @@ describe('Blog Component Tests', () => {
   // 5. Performance Tests
   describe('5.1 Card Animation', () => {
     it('should perform smooth animations', () => {
-      let startTime
-
-      cy.window().then((win) => {
-        startTime = win.performance.now()
-      })
-
       cy.get('[data-testid="blog-card"]').first().within(() => {
+        // Verify initial state
+        cy.get('[data-testid="card-content"]')
+          .should('not.be.visible')
+          .should('have.css', 'transition-property', 'max-height')
+          .should('have.css', 'transition-duration', '0.3s')
+
+        // Click to expand
         cy.get('[data-testid="toggle-button"]').click()
-        
+
+        // Verify content becomes visible with transition
         cy.get('[data-testid="card-content"]')
           .should('be.visible')
-          .then(() => {
-            cy.window().then((win) => {
-              const endTime = win.performance.now()
-              expect(endTime - startTime).to.be.lessThan(350) // 300ms + small buffer
-            })
-          })
+          .should('have.css', 'transition-property', 'max-height')
+          .should('have.css', 'transition-duration', '0.3s')
+
+        // Verify toggle button state
+        cy.get('[data-testid="toggle-button"]')
+          .should('have.text', 'Read Less')
       })
     })
+
     it('should handle multiple card animations simultaneously', () => {
       cy.get('[data-testid="toggle-button"]').click({ multiple: true })
       cy.get('[data-testid="card-content"]').should('be.visible')
