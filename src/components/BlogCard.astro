@@ -7,22 +7,28 @@ interface Props {
   image: string;
 }
 
-const { title, description, date, author, image } = Astro.props;
+const { 
+  title = 'Untitled Post',
+  description = 'No description available',
+  date = 'No date',
+  author = 'Anonymous',
+  image = '/placeholder-image.jpg'
+} = Astro.props;
 ---
 
-<div class="blog-card">
-  <div class="blog-card-header">
-    <img src={image} alt={title} class="blog-card-image" />
-    <h2 class="blog-card-title">{title}</h2>
+<div class="blog-card" data-testid="blog-card">
+  <div class="blog-card-header" data-testid="card-header">
+    <img src={image} alt={title} class="blog-card-image" data-testid="card-image" />
+    <h2 class="blog-card-title" data-testid="card-title">{title}</h2>
   </div>
-  <div class="blog-card-content">
-    <p class="blog-card-description">{description}</p>
+  <div class="blog-card-content" data-testid="card-content">
+    <p class="blog-card-description" data-testid="card-description">{description}</p>
     <div class="blog-card-meta">
-      <span class="blog-card-date">{date}</span>
-      <span class="blog-card-author">By {author}</span>
+      <span class="blog-card-date" data-testid="card-date">{date}</span>
+      <span class="blog-card-author" data-testid="card-author">By {author}</span>
     </div>
   </div>
-  <button class="blog-card-toggle">Read More</button>
+  <button class="blog-card-toggle" data-testid="toggle-button">Read More</button>
 </div>
 
 <style>
@@ -30,8 +36,8 @@ const { title, description, date, author, image } = Astro.props;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 1rem 0;
-    padding: 1rem;
+    margin: 16px 0;
+    padding: 16px;
     transition: all 0.3s ease;
   }
 
@@ -76,7 +82,7 @@ const { title, description, date, author, image } = Astro.props;
   }
 
   .blog-card-toggle {
-    background: #007bff;
+    background: #0056b3;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -87,7 +93,7 @@ const { title, description, date, author, image } = Astro.props;
   }
 
   .blog-card-toggle:hover {
-    background: #0056b3;
+    background: #003d80;
   }
 </style>
 
@@ -95,8 +101,10 @@ const { title, description, date, author, image } = Astro.props;
   document.querySelectorAll('.blog-card-toggle').forEach(button => {
     button.addEventListener('click', () => {
       const card = button.closest('.blog-card');
-      card.classList.toggle('expanded');
-      button.textContent = card.classList.contains('expanded') ? 'Read Less' : 'Read More';
+      if (card) {
+        card.classList.toggle('expanded');
+        button.textContent = card.classList.contains('expanded') ? 'Read Less' : 'Read More';
+      }
     });
   });
 </script> 

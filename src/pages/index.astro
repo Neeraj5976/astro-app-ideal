@@ -19,16 +19,20 @@ import  blogPosts  from '../data/blogPosts';
 		<Header />
 		<main>
 			<h1>Web Technology Blog</h1>
-			<div class="blog-grid">
-				{blogPosts.map((post) => (
-					<BlogCard
-						title={post.title}
-						description={post.description}
-						date={post.date}
-						author={post.author}
-						image={post.image}
-					/>
-				))}
+			<div class="blog-grid" data-testid="blog-grid">
+				{blogPosts.length === 0 ? (
+					<p data-testid="no-posts-message">No blog posts available</p>
+				) : (
+					blogPosts.map((post) => (
+						<BlogCard
+							title={post.title}
+							description={post.description}
+							date={post.date}
+							author={post.author}
+							image={post.image}
+						/>
+					))
+				)}
 			</div>
 		</main>
 		<Footer />
